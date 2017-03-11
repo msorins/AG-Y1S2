@@ -1,4 +1,7 @@
-from .Graphs import *
-from .UI import *
+from Graphs import *
+from UI import *
 
-graphsObj = OrientedCostGraph()
+def bootstrap():
+    uiObj = Ui()
+
+bootstrap()
