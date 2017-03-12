@@ -5,23 +5,28 @@ class  Ui():
 
         while True:
             self.menu()
+            self.parseCommands()
 
 
 
     def menu(self):
-        msg = '1. Load graph from file (graph.txt)'
-        msg += '2. Save graph to file (graph.txt)'
-        msg += '3. Add edge (muchie)'
-        msg += '4. Add vertex (nod)'
-        msg += '5. Remove edge (muchie)'
-        msg += '6. Remove vertex (nod)'
-        msg += '7. Get Number of Vertices'
-        msg += '8. Check if edge exists (between two vertices'
-        msg += '9. In & Out degree of an edge'
-        msg += '10. Iterate through outbound edges of a vertex'
-        msg += '11. Iterate through inbound edges of a vertex'
-        msg += '12. Modify edge information (integer)'
-        msg += '#########################################'
+        msg = '\n\n#########################################\n'
+        msg += '0. Print graph \n'
+        msg += '1. Load graph from file (graph.txt) \n'
+        msg += '2. Save graph to file (graph.txt) \n'
+        msg += '3. Add edge (muchie) \n'
+        msg += '4. Add vertex (nod) \n'
+        msg += '5. Remove edge (muchie) \n'
+        msg += '6. Remove vertex (nod) \n'
+        msg += '7. Get Number of Vertices \n'
+        msg += '8. Check if edge exists (between two vertices) \n'
+        msg += '9. In & Out degree of an edge \n'
+        msg += '10. Outbound edges of a vertex \n'
+        msg += '11. Inbound edges of a vertex \n'
+        msg += '12. Modify edge information (integer) \n'
+        msg += '######################################### \n \n'
+
+        print(msg)
 
     def read(self):
         nrLine = 0
@@ -55,4 +60,95 @@ class  Ui():
 
     def parseCommands(self):
         cmd = int(input("Command: "))
+
+        if cmd == 0:
+            print(self._graph)
+        elif cmd == 1:
+            self.read()
+        elif cmd == 2:
+            self.save()
+        elif cmd == 3:
+            self.addEdge()
+        elif cmd == 4:
+            self.addVertex()
+        elif cmd == 5:
+            self.removeEdge()
+        elif cmd == 6:
+            self.removeVertex()
+        elif cmd == 7:
+            self.getNumberOfVertices()
+        elif cmd == 8:
+            self.doesEdgeExist()
+        elif cmd == 9:
+            self.getInOutDegree()
+        elif cmd == 10:
+            self.outboundOfVertex()
+        elif cmd == 11:
+            self.inboundOfVertex()
+        elif cmd == 12:
+            self.modifyEdgeCost()
+
+
+    def addEdge(self):
+        '''
+        Reads and adds an edge to the graph
+        '''
+        x = int(input("First vertex: "))
+        y = int(input("Second vertex: "))
+        z = int(input("Cost: "))
+
+        self._graph.addEdge(x, y, z)
+
+    def addVertex(self):
+        '''
+        Reads and adds a vertex to the graph
+        '''
+        x = int(input("Vertex: "))
+        self._graph.addVertex(x)
+
+    def removeEdge(self):
+        x = int(input("First vertex: "))
+        y = int(input("Second vertex: "))
+
+        self._graph.removeEdge(x, y)
+
+    def removeVertex(self):
+        x = int(input("Vertex: "))
+        self._graph.removeVertex(x)
+
+    def getNumberOfVertices(self):
+        print("Nr. of vertices: " + str(self._graph.getNumberOfVertices()))
+
+    def doesEdgeExist(self):
+        x = int(input("First vertex: "))
+        y = int(input("Second vertex: "))
+
+        if self._graph.isEdge(x, y):
+            print("The edge exists")
+        else:
+            print("The edge does not exists")
+
+    def getInOutDegree(self):
+        x = int(input("Vertex: "))
+
+        print("In degree is " + str(self._graph.getInDegree(x)) + "\n")
+        print("Out degree is " + str(self._graph.getOutDegree(x)) + "\n")
+
+    def outboundOfVertex(self):
+        x = int(input("Vertex: "))
+
+        print(self._graph.parseNodeOut(x))
+
+    def inboundOfVertex(self):
+        x = int(input("Vertex: "))
+
+        print(self._graph.parseNodeIn(x))
+
+    def modifyEdgeCost(self):
+        x = int(input("First vertex: "))
+        y = int(input("Second vertex: "))
+        cost = int(input("Cost: "))
+
+        self._graph.changeCost(x, y, cost)
+
 

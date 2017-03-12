@@ -1,4 +1,5 @@
 #  graf neorientat -> graf neorientat cost -> graf orientat -> graf orientat cost
+import copy
 
 class graphException(Exception):
     def __init__(self, msg):
@@ -62,12 +63,16 @@ class UnorientedGraph():
         '''
         :return: The number of vertices in the graph
         '''
-        return len(self.dictOut)
+        nr = 0
+        for key in self.dictOut:
+                nr += len(self.dictOut[key])
+        return nr
 
     def getNumberOfEdges(self):
         '''
         :return: number of edges
         '''
+        self._edges = len(self.dictOut)
         return self._edges
 
     def getOutDegree(self, x):
@@ -77,6 +82,33 @@ class UnorientedGraph():
         '''
         return len(self.dictOut[x])
 
+    def removeEdge(self, x, y):
+        '''
+        :param x: vertex
+        :param y: vertex
+        :return: removes that edge
+        '''
+        if not self.isEdge(x, y):
+            raise graphException("Edge does not exist")
+
+        self.dictOut[x].remove(y)
+        self.dictOut[y].remove(x)
+
+    def removeVertex(self, x):
+        '''
+        Removes vertex x
+        :param x: vertex
+        '''
+
+        if not x in self.dictOut.keys():
+            raise graphException("Vertex does not exist")
+
+        auxLst = copy.deepcopy(self.dictOut[x])
+        for crt in auxLst:
+            self.removeEdge(x, crt)
+
+        #Actually delete that node
+        del self.dictOut[x]
 
 class OrientedGraph(UnorientedGraph):
     def __init__(self, n):
@@ -117,6 +149,40 @@ class OrientedGraph(UnorientedGraph):
         '''
         return len(self.dictIn[x])
 
+    def removeEdge(self, x, y):
+        '''
+        :param x: vertex
+        :param y: vertex
+        :return: removes that edge
+        '''
+        if not self.isEdge(x, y):
+            raise graphException("Edge does not exist")
+
+        self.dictOut[x].remove(y)
+        self.dictIn[y].remove(x)
+
+    def removeVertex(self, x):
+        '''
+            Removes vertex x
+            :param x: vertex
+        '''
+
+        if not x in self.dictOut.keys():
+            raise graphException("Vertex does not exist")
+
+        #Go through the dictOut and delete all the edges
+        auxLst = copy.deepcopy(self.dictOut[x])
+        for crt in auxLst:
+            self.removeEdge(x, crt)
+
+        # Go through the dictIn and delete all the edges
+        auxLst = copy.deepcopy(self.dictIn[x])
+        for crt in auxLst:
+            self.removeEdge(crt, x)
+
+        # Actually delete that node
+        del self.dictOut[x]
+
 class UnorientedCostGraph(UnorientedGraph):
     def __init__(self, n):
         '''
@@ -150,18 +216,24 @@ class OrientedCostGraph(OrientedGraph):
     def getCost(self, x, y):
         return self.dictCost[(x,y)]
 
+    def changeCost(self, x, y, cost):
+        if not self.isEdge(x, y):
+            raise graphException("Edge does not exist")
+
+        self.dictCost[(x,y)] = cost
+
     def __str__(self):
         res = ''
 
         res += str(self.getNumberOfEdges()) + ' ' + str(self.getNumberOfVertices()) + '\n'
-        for i in range(1, self.getNumberOfEdges() + 1):
+        for node in self.dictOut:
             # If a node is isolated
-            if len(self.parseNodeOut(i)) == 0 and (len(self.parseNodeIn(i))) == 0:
-                res += str(i) + ' -1\n'
+            if len(self.parseNodeOut(node)) == 0 and (len(self.parseNodeIn(node))) == 0:
+                res += str(node) + ' -1\n'
                 continue
 
-            for j in self.parseNodeOut(i):
-                res += str(i) + ' ' + str(j) + ' ' + str(self.getCost(i, j)) + '\n'
+            for j in self.parseNodeOut(node):
+                res += str(node) + ' ' + str(j) + ' ' + str(self.getCost(node, j)) + '\n'
 
         return res
 
