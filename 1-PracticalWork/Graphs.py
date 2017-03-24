@@ -10,7 +10,7 @@ class graphException(Exception):
 
 
 #Mother Class
-class UnorientedGraph():
+class UndirectedGraph():
     def __init__(self, n):
         '''
         Creates an undirected graph with n vertices (noduri) - numbered from 0 to n-1
@@ -61,19 +61,20 @@ class UnorientedGraph():
 
     def getNumberOfVertices(self):
         '''
-        :return: The number of vertices in the graph
-        '''
-        nr = 0
-        for key in self.dictOut:
-                nr += len(self.dictOut[key])
-        return nr
-
-    def getNumberOfEdges(self):
-        '''
-        :return: number of edges
+        :return: The number of vertices in the graph (NODURI)
         '''
         self._edges = len(self.dictOut)
         return self._edges
+
+    def getNumberOfEdges(self):
+        '''
+        :return: number of edges (MUCHII)
+        '''
+        nr = 0
+        for key in self.dictOut:
+            nr += len(self.dictOut[key])
+        return nr
+
 
     def getOutDegree(self, x):
         '''
@@ -110,7 +111,7 @@ class UnorientedGraph():
         #Actually delete that node
         del self.dictOut[x]
 
-class OrientedGraph(UnorientedGraph):
+class DirectedGraph(UndirectedGraph):
     def __init__(self, n):
         '''
             Creates a directed graph with n vertices (noduri) - numbered from 0 to n-1
@@ -183,13 +184,13 @@ class OrientedGraph(UnorientedGraph):
         # Actually delete that node
         del self.dictOut[x]
 
-class UnorientedCostGraph(UnorientedGraph):
+class UndirectedCostGraph(UndirectedGraph):
     def __init__(self, n):
         '''
         Creates an undirected cost graph with n vertices (noduri) - numbered from 0 to n-1
         :param n: integer, number of vertices
         '''
-        super(UnorientedCostGraph, self).__init__(n)
+        super(UndirectedCostGraph, self).__init__(n)
         self.dictCost = {}
 
     def addEdge(self, x, y, cost):
@@ -200,7 +201,7 @@ class UnorientedCostGraph(UnorientedGraph):
     def getCost(self, x, y):
         return self.dictCost[(x,y)]
 
-class OrientedCostGraph(OrientedGraph):
+class DirectedCostGraph(DirectedGraph):
     def __init__(self, n):
         '''
             Creates an directed cost graph with n vertices (noduri) - numbered from 0 to n-1
@@ -225,7 +226,7 @@ class OrientedCostGraph(OrientedGraph):
     def __str__(self):
         res = ''
 
-        res += str(self.getNumberOfEdges()) + ' ' + str(self.getNumberOfVertices()) + '\n'
+        res += str(self.getNumberOfVertices()) + ' ' + str(self.getNumberOfEdges()) + '\n'
         for node in self.dictOut:
             # If a node is isolated
             if len(self.parseNodeOut(node)) == 0 and (len(self.parseNodeIn(node))) == 0:

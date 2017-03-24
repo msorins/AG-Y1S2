@@ -1,11 +1,15 @@
-from Graphs import OrientedCostGraph
+from Graphs import DirectedCostGraph
+from Graphs import graphException
 class  Ui():
     def __init__(self):
         self.read()
 
         while True:
-            self.menu()
-            self.parseCommands()
+            try:
+                self.menu()
+                self.parseCommands()
+            except graphException as e:
+                print(e)
 
 
 
@@ -18,12 +22,14 @@ class  Ui():
         msg += '4. Add vertex (nod) \n'
         msg += '5. Remove edge (muchie) \n'
         msg += '6. Remove vertex (nod) \n'
-        msg += '7. Get Number of Vertices \n'
-        msg += '8. Check if edge exists (between two vertices) \n'
-        msg += '9. In & Out degree of an edge \n'
-        msg += '10. Outbound edges of a vertex \n'
-        msg += '11. Inbound edges of a vertex \n'
-        msg += '12. Modify edge information (integer) \n'
+        msg += '7. Get number of Vertices \n'
+        msg += '8. Get number of EDGES \n'
+        msg += '9. Get cost of EDGE \n'
+        msg += '10. Check if edge exists (between two vertices) \n'
+        msg += '11. In & Out degree of an edge \n'
+        msg += '12. Outbound edges of a vertex \n'
+        msg += '13. Inbound edges of a vertex \n'
+        msg += '14. Modify edge information (integer) \n'
         msg += '######################################### \n \n'
 
         print(msg)
@@ -39,7 +45,7 @@ class  Ui():
                 if nrLine == 1:
                     n = int(line[0])
                     m = int(line[1])
-                    self._graph = OrientedCostGraph(n)
+                    self._graph = DirectedCostGraph(n)
                 else:
                     x = int(line[0])
                     y = int(line[1])
@@ -78,14 +84,18 @@ class  Ui():
         elif cmd == 7:
             self.getNumberOfVertices()
         elif cmd == 8:
-            self.doesEdgeExist()
+            self.getNumberOfEdges()
         elif cmd == 9:
-            self.getInOutDegree()
+            self.getCostOfEdge()
         elif cmd == 10:
-            self.outboundOfVertex()
+            self.doesEdgeExist()
         elif cmd == 11:
-            self.inboundOfVertex()
+            self.getInOutDegree()
         elif cmd == 12:
+            self.outboundOfVertex()
+        elif cmd == 13:
+            self.inboundOfVertex()
+        elif cmd == 14:
             self.modifyEdgeCost()
 
 
@@ -118,6 +128,15 @@ class  Ui():
 
     def getNumberOfVertices(self):
         print("Nr. of vertices: " + str(self._graph.getNumberOfVertices()))
+
+    def getNumberOfEdges(self):
+        print("Nr. of edges: " + str(self._graph.getNumberOfEdges()))
+
+    def getCostOfEdge(self):
+        x = int(input("First vertex: "))
+        y = int(input("Second vertex: "))
+
+        print("Cost of edge: ", self._graph.getCost(x, y))
 
     def doesEdgeExist(self):
         x = int(input("First vertex: "))
