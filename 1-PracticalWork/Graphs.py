@@ -11,12 +11,13 @@ class graphException(Exception):
 
 #Mother Class
 class UndirectedGraph():
-    def __init__(self, n):
+    def __init__(self, file):
         '''
         Creates an undirected graph with n vertices (noduri) - numbered from 0 to n-1
         :param n: integer, number of vertices
         '''
-        self._edges = n
+        #self._edges = n
+        self._file = file
         self.dictOut = {}
 
     def parseNodeOut(self, node):
@@ -111,13 +112,48 @@ class UndirectedGraph():
         #Actually delete that node
         del self.dictOut[x]
 
+    def getGraph(self):
+        '''
+        :return: all the graph
+        '''
+        return self.dictOut
+
+    def read(self):
+        nrLine = 0
+
+        with open(self._file) as file:
+            for line in file:
+                nrLine += 1
+                line = line.split()
+
+                if nrLine == 1:
+                    n = int(line[0])
+                    m = int(line[1])
+                    self.dictOut = {}
+                else:
+                    x = int(line[0])
+                    y = int(line[1])
+                    if y != -1:
+                        # Normal edge (between two vertices)
+                        self.addEdge(x, y)
+                    else:
+                        # Just one isolated vertex
+                        self.addVertex(x)
+        self.save()
+
+    def save(self):
+        '''
+        Writes current graph to disk file (aka saves it)
+        '''
+        open(self._file, 'w').write(str(self))
+
 class DirectedGraph(UndirectedGraph):
-    def __init__(self, n):
+    def __init__(self, file):
         '''
             Creates a directed graph with n vertices (noduri) - numbered from 0 to n-1
             :param n: integer, number of vertices
         '''
-        super().__init__(n)
+        super().__init__(file)
 
         self.dictIn = {}
 
@@ -184,13 +220,43 @@ class DirectedGraph(UndirectedGraph):
         # Actually delete that node
         del self.dictOut[x]
 
+    def read(self):
+        nrLine = 0
+
+        with open(self._file) as file:
+            for line in file:
+                nrLine += 1
+                line = line.split()
+
+                if nrLine == 1:
+                    n = int(line[0])
+                    m = int(line[1])
+                    self.dictOut = {}
+                    self.dictIn = {}
+                else:
+                    x = int(line[0])
+                    y = int(line[1])
+                    if y != -1:
+                        # Normal edge (between two vertices)
+                        self.addEdge(x, y)
+                    else:
+                        # Just one isolated vertex
+                        self.addVertex(x)
+        self.save()
+
+    def save(self):
+        '''
+        Writes current graph to disk file (aka saves it)
+        '''
+        open(self._file, 'w').write(str(self))
+
 class UndirectedCostGraph(UndirectedGraph):
-    def __init__(self, n):
+    def __init__(self, file):
         '''
         Creates an undirected cost graph with n vertices (noduri) - numbered from 0 to n-1
         :param n: integer, number of vertices
         '''
-        super(UndirectedCostGraph, self).__init__(n)
+        super(UndirectedCostGraph, self).__init__(file)
         self.dictCost = {}
 
     def addEdge(self, x, y, cost):
@@ -201,13 +267,44 @@ class UndirectedCostGraph(UndirectedGraph):
     def getCost(self, x, y):
         return self.dictCost[(x,y)]
 
+    def read(self):
+        nrLine = 0
+
+        with open(self._file) as file:
+            for line in file:
+                nrLine += 1
+                line = line.split()
+
+                if nrLine == 1:
+                    n = int(line[0])
+                    m = int(line[1])
+                    self.dictOut = {}
+                    self.dictOut = {}
+                else:
+                    x = int(line[0])
+                    y = int(line[1])
+                    if y != -1:
+                        # Normal edge (between two vertices)
+                        z = int(line[2])
+                        self.addEdge(x, y, z)
+                    else:
+                        # Just one isolated vertex
+                        self.addVertex(x)
+        self.save()
+
+    def save(self):
+        '''
+        Writes current graph to disk file (aka saves it)
+        '''
+        open(self._file, 'w').write(str(self))
+
 class DirectedCostGraph(DirectedGraph):
-    def __init__(self, n):
+    def __init__(self, file):
         '''
             Creates an directed cost graph with n vertices (noduri) - numbered from 0 to n-1
             :param n: integer, number of vertices
         '''
-        super().__init__(n)
+        super().__init__(file)
         self.dictCost = {}
 
     def addEdge(self, x, y, cost):
@@ -237,6 +334,38 @@ class DirectedCostGraph(DirectedGraph):
                 res += str(node) + ' ' + str(j) + ' ' + str(self.getCost(node, j)) + '\n'
 
         return res
+
+    def read(self):
+        nrLine = 0
+
+        with open(self._file) as file:
+            for line in file:
+                nrLine += 1
+                line = line.split()
+
+                if nrLine == 1:
+                    n = int(line[0])
+                    m = int(line[1])
+                    self.dictIn = {}
+                    self.dictOut = {}
+                    self.dictCost = {}
+                else:
+                    x = int(line[0])
+                    y = int(line[1])
+                    if y != -1:
+                        # Normal edge (between two vertices)
+                        z = int(line[2])
+                        self.addEdge(x, y, z)
+                    else:
+                        # Just one isolated vertex
+                        self.addVertex(x)
+        self.save()
+
+    def save(self):
+        '''
+        Writes current graph to disk file (aka saves it)
+        '''
+        open(self._file, 'w').write(str(self))
 
 
 

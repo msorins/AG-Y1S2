@@ -1,20 +1,16 @@
+from Graphs import UndirectedGraph
+
 class PracticalWork2():
     def __init__(self):
-        pass
+        self._graph = UndirectedGraph()
 
-    def LowestLengthPathDFS(self, x, y):
-        self.computeDFS(x, y)
-        pass
+    def getNodesByDFS(self):
+        used = []
+        for node in self._graph.getGraph():
+            print(node + "\n")
 
 
-    def LowestLengthPathBFS(self, x, y):
-        pass
 
-    def computeDFS(self, crt, final):
-        pass
 
-    def computeBFS(self, crt, final):
-        queue = []
-
-    #3. Write a program that finds the connected components of an undirected graph using a depth-first traversal of the graph.
-        queue.append(crt)
+PracticalWork2Obj = PracticalWork2()
+PracticalWork2Obj.getNodesByDFS()

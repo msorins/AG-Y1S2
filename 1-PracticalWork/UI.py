@@ -1,8 +1,11 @@
 from Graphs import DirectedCostGraph
 from Graphs import graphException
+from RepoGraphs import *
 class  Ui():
     def __init__(self):
-        self.read()
+        self._graph = DirectedCostGraph("graph.txt")
+        self._graph.read()
+
 
         while True:
             try:
@@ -35,34 +38,13 @@ class  Ui():
         print(msg)
 
     def read(self):
-        nrLine = 0
-
-        with open('graph.txt') as file:
-            for line in file:
-                nrLine += 1
-                line = line.split()
-
-                if nrLine == 1:
-                    n = int(line[0])
-                    m = int(line[1])
-                    self._graph = DirectedCostGraph(n)
-                else:
-                    x = int(line[0])
-                    y = int(line[1])
-                    if y != -1:
-                        # Normal edge (between two vertices)
-                        z = int(line[2])
-                        self._graph.addEdge(x, y, z)
-                    else:
-                        # Just one isolated vertex
-                        self._graph.addVertex(x)
-        self.save()
+        self._graph.read()
 
     def save(self):
         '''
         Writes current graph to disk file (aka saves it)
         '''
-        open('graph.txt', 'w').write(str(self._graph))
+        self._graph.save()
 
     def parseCommands(self):
         cmd = int(input("Command: "))
