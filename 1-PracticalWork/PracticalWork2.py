@@ -1,5 +1,6 @@
 from Graphs import UndirectedGraph
 from Graphs import DirectedGraph
+from Graphs import graphException
 
 class PracticalWork2():
     def __init__(self):
@@ -29,7 +30,6 @@ class PracticalWork2():
             strRes = strRes
             print(strRes)
 
-        print("\n\n")
 
     def DFS(self, node, used):
         res = []
@@ -47,7 +47,7 @@ class Bonus1():
         self._graph = DirectedGraph("PracticalWork2-Bonus1.txt")
         self._graph.read()
 
-    def StronglyConnectedComponents(self):
+    def stronglyConnectedComponents(self):
         fol = {}
         st = []
         ctc = []
@@ -72,7 +72,7 @@ class Bonus1():
             fol[node] = True
             ctc.append(self.DFS2(node, fol))
 
-        a = 3
+
 
         print("Number of strongly connected components is ", len(ctc))
         nr = 0
@@ -83,7 +83,6 @@ class Bonus1():
                 strRes += str(j) + " "
             print(strRes)
 
-        print("\n\n")
 
 
 
@@ -106,8 +105,88 @@ class Bonus1():
 
         return res
 
-PracticalWork2Obj = PracticalWork2()
-PracticalWork2Obj.getNodesByDFS()
+class Bonus2():
+    def __init__(self):
+        self._graph = UndirectedGraph("PracticalWork2-Bonus2.txt")
+        self._graph.read()
+        self._res = []
 
-bonus1Obj = Bonus1()
-bonus1Obj.StronglyConnectedComponents()
+    def biconnectedComponents(self):
+        st = []
+        nivel = {}
+        low = {}
+
+        st.append(1)
+        self.DFS(1, 1, st, nivel, low)
+
+        print("Number of biconnected connected components is ", len(self._res))
+        nr = 0
+        for i in self._res:
+            nr += 1
+            strRes = str(nr) + ": "
+            for j in sorted(i):
+                strRes += str(j) + " "
+            print(strRes)
+
+
+    def DFS(self, node, k, st, nivel, low):
+        nivel[node] = k
+        low[node] = k
+
+        for nextNode in sorted(self._graph.parseNodeOut(node)):
+            if nextNode not in nivel:
+                st.append(nextNode)
+                self.DFS(nextNode, k + 1, st, nivel, low)
+
+                low[node] = min(low[node], low[nextNode])
+                if low[nextNode] >= nivel[node]:
+                    self.getOut(node, nextNode, st)
+            else:
+                low[node] = min(low[node], nivel[nextNode])
+
+    def getOut(self, left, right, st):
+        res = []
+        while st[-1] != right:
+            res.append(st[-1])
+            st.pop()
+        st.pop()
+
+        res.append(left)
+        res.append(right)
+
+        self._res.append(res)
+
+
+class UiPracticalWork2():
+    def __init__(self):
+        while True:
+            try:
+                self.menu()
+                self.parseCommands()
+            except graphException as e:
+                print(e)
+
+    def menu(self):
+        msg = '\n\n#########################################\n'
+        msg += '1. Get connected components \n'
+        msg += '2. Get strongly connected components \n'
+        msg += '3. Get biconnected components \n'
+        msg += '######################################### \n \n'
+
+        print(msg)
+
+    def parseCommands(self):
+        cmd = int(input("Command: "))
+
+        if cmd == 1:
+            PracticalWork2Obj = PracticalWork2()
+            PracticalWork2Obj.getNodesByDFS()
+        elif cmd == 2:
+            bonus1Obj = Bonus1()
+            bonus1Obj.stronglyConnectedComponents()
+        elif cmd == 3:
+            bonus2Obj = Bonus2()
+            bonus2Obj.biconnectedComponents()
+
+
+Ui = UiPracticalWork2()
