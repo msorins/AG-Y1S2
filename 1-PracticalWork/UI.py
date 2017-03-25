@@ -1,6 +1,6 @@
 from Graphs import DirectedCostGraph
 from Graphs import graphException
-from RepoGraphs import *
+
 class  Ui():
     def __init__(self):
         self._graph = DirectedCostGraph("graph.txt")

@@ -51,6 +51,7 @@ class UndirectedGraph():
         self.addVertex(y)
 
         if self.isEdge(x, y):
+            print(x, y)
             raise graphException("Edge already exists")
 
         self.dictOut[x].append(y)
@@ -146,6 +147,22 @@ class UndirectedGraph():
         Writes current graph to disk file (aka saves it)
         '''
         open(self._file, 'w').write(str(self))
+
+    def __str__(self):
+        res = ''
+        nr = self.getNumberOfEdges() // 2
+        res += str(self.getNumberOfVertices()) + ' ' + str(nr) + '\n'
+        for node in self.dictOut:
+            # If a node is isolated
+            if len(self.parseNodeOut(node)) == 0:
+                res += str(node) + ' -1\n'
+                continue
+
+            for j in self.parseNodeOut(node):
+                if node < j:
+                    res += str(node) + ' ' + str(j) + ' \n'
+
+        return res
 
 class DirectedGraph(UndirectedGraph):
     def __init__(self, file):
@@ -249,6 +266,21 @@ class DirectedGraph(UndirectedGraph):
         Writes current graph to disk file (aka saves it)
         '''
         open(self._file, 'w').write(str(self))
+
+    def __str__(self):
+        res = ''
+        nr = self.getNumberOfEdges()
+        res += str(self.getNumberOfVertices()) + ' ' + str(nr) + '\n'
+        for node in self.dictOut:
+            # If a node is isolated
+            if len(self.parseNodeOut(node)) == 0:
+                res += str(node) + ' -1\n'
+                continue
+
+            for j in self.parseNodeOut(node):
+                    res += str(node) + ' ' + str(j) + ' \n'
+
+        return res
 
 class UndirectedCostGraph(UndirectedGraph):
     def __init__(self, file):
