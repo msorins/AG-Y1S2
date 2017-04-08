@@ -119,6 +119,14 @@ class UndirectedGraph():
         '''
         return self.dictOut
 
+    def getVertices(self):
+        res = []
+        for node in self.dictOut:
+                res.append(node)
+
+        return res
+
+
     def read(self):
         nrLine = 0
 
@@ -340,19 +348,39 @@ class DirectedCostGraph(DirectedGraph):
         self.dictCost = {}
 
     def addEdge(self, x, y, cost):
+        '''
+        :param x: vertex
+        :param y: vertex
+        :param cost: the cost
+        :return: adds an edge to the graph
+        '''
         super().addEdge(x, y)
         self.dictCost[(x,y)] = cost
 
     def getCost(self, x, y):
+        '''
+        :param x: vertex
+        :param y: vertex
+        :return: cost of edge x-y
+        '''
         return self.dictCost[(x,y)]
 
     def changeCost(self, x, y, cost):
+        '''
+        :param x: vertex
+        :param y: vertex
+        :param cost: changes the cost of edge x-y with this value
+        :return:
+        '''
         if not self.isEdge(x, y):
             raise graphException("Edge does not exist")
 
         self.dictCost[(x,y)] = cost
 
     def __str__(self):
+        '''
+        :return: a string with the graph ready to be saved on file
+        '''
         res = ''
 
         res += str(self.getNumberOfVertices()) + ' ' + str(self.getNumberOfEdges()) + '\n'
