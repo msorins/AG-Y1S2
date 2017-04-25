@@ -1,3 +1,6 @@
+import sys
+sys.setrecursionlimit(10000)
+
 from Graphs import UndirectedGraph
 from Graphs import DirectedGraph
 from Graphs import graphException
@@ -33,12 +36,15 @@ class PracticalWork2():
 
     def DFS(self, node, used):
         res = []
-        res.append(node)
+
         for nextNode in self._graph.parseNodeOut(node):
             if used[nextNode] == False:
                 used[nextNode] = True
+
+                res.append([node, nextNode])
                 for i in self.DFS(nextNode, used):
                     res.append(i)
+
 
         return res
 

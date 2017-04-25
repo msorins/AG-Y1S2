@@ -52,6 +52,7 @@ class UndirectedGraph():
 
         if self.isEdge(x, y):
             print(x, y)
+            return
             raise graphException("Edge already exists")
 
         self.dictOut[x].append(y)
