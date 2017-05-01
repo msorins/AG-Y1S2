@@ -17,7 +17,7 @@ class strct():
         return self._cost
 
 
-class PracticalWork3():
+class PracticalWork4():
     def __init__(self):
         '''
         Init function
@@ -90,8 +90,8 @@ class UiPracticalWork4():
         cmd = int(input("Command: "))
 
         if cmd == 1:
-            PracticalWork3Obj = PracticalWork3()
-            PracticalWork3Obj.Kruskal()
+            PracticalWork4Obj = PracticalWork4()
+            PracticalWork4Obj.Kruskal()
 
 
 Ui = UiPracticalWork4()
