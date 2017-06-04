@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/so/Desktop/UBB/AG/RepeatForExam/13MaximumLengthPathInDAG/main.cpp
+iostream
+-
+fstream
+-
+vector
+-
+queue
+-
+

@@ -1,12 +1,6 @@
 from Graphs import DirectedCostGraph
 from Graphs import graphException
 
-#1) Initialize the result as {}
-#2) Consider a set of all edges in given graph.  Let the set be E.
-#3) Do following while E is not empty
-#...a) Pick an arbitrary edge (u, v) from set E and add 'u' and 'v' to result
-#...b) Remove all edges from E which are either incident on u or v.
-#4) Return result
 
 
 class PracticalWork5():

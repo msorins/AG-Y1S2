@@ -61,14 +61,19 @@ class PracticalWork4():
         lst = sorted(lst, key=lambda x: x.getCost())
 
         #fill the values for the existing edges
+        cost = 0
         for i in range(len(lst)):
             if self.group(gr, lst[i].getX()) != self.group(gr, lst[i].getY()):
                 self.reunite(gr, lst[i].getX(), lst[i].getY() )
                 rasp.append(lst[i])
+                cost += lst[i].getCost()
+
 
         print("The minimum spanning tree is the following one: ")
         for crt in rasp:
             print( str(crt.getX()) + " - " + str(crt.getY()) )
+
+        print("Cost: ", cost)
 
 class UiPracticalWork4():
     def __init__(self):
